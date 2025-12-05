@@ -7,7 +7,7 @@
 #include <avr/io.h>
 #include <stdint.h>
 #include "pwm_driver.h"
-#include "C:\\Users\\ebenezer\\workspace\\TestBed\\main_testbed.h"
+#include "main_testbed.h"
 
 #define LED_ON_PERIOD (500)
 
