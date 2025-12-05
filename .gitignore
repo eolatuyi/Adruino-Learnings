@@ -1,0 +1,25 @@
+# Build artifacts and object files
+*.o
+*.elf
+*.hex
+*.bin
+*.srec
+*.s19
+*.lst
+*.map
+
+# IDE and editor metadata
+.project
+.cproject
+.settings/
+.externalToolBuilders/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Generated scripts
+*_upload.bat
+
+# Backup files
+*.bak

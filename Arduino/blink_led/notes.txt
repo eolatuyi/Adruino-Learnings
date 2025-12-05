@@ -1,0 +1,44 @@
+Blinking LED:
+
+Configuring Pin
+- Register
+    - Bits (Access IO Adress/ Register)
+        - DDxn   (DDRx)    1: Output Pin direction
+        - PORTxn (PORTx) 0/1: Pin state
+        - PINxn  (PINx)    1: Toggles pin irrespective of state of DDxn
+
+8-bit addressing system
+
+(uint8 *)address(DDRB)  |=   1 << bit_number(DDB5);    // Output port direction
+(uint8 *)address(PORTB) |=   1 << bit_number(PORTB5);  // on pin
+(uint8 *)address(PORTB) &= ~(1 << bit_number(PORTB5)); // off pin
+
+BUILD AND DL Process
+
+# AVR Libc Reference Manual Options for C compiler avr-gcc has options definition
+# Compile and assemble but do not link
+avr-gcc -Os -DF_CPU=16000000L -mmcu=atmega328p -c -o blink_led.o blink_led.c
+
+#link to create elf file
+avr-gcc -mmcu=atmega328p blink_led.o -oblink_led
+
+#Convert elf program to ihex Application File format and remove .eeprom section from the output
+avr-objcopy -O ihex -R .eeprom blink_led blink_led.hex
+
+#Uploaded from Target
+avrdude -F -V -c arduino -p ATMEGA328P -P com1 -b115200 -U flash:r:blink_edit_bak_app.hex:i
+
+
+#download to target specifying -p <PART #> -c <programmer-id> -F: skip device signature ping
+avrdude -F -V -c arduino -p ATMEGA328P -P com1 -b115200 -U flash:w:blink_led.hex:i
+
+
+https://code.google.com/archive/p/arduino/wikis/Platforms.wiki
+
+Variables controlling the process of building sketches for the board:
+
+BOARD.build.mcu: the microcontroller on the board (e.g. "atmega328" or "atmega1280").
+
+BOARD.build.f_cpu: the clock speed at which the microcontroller operates (normally "16000000L", or, for an ATmega168 running on its internal clock, "8000000L").
+
+BOARD.build.core: the location of the core to link sketches against when compiling for the board. This may be the name of a folder in the core sub-folder of the platform (e.g. "arduino") or a value of the format platform:core, where platform is the name of the folder of another platform (e.g. the built-in "arduino") and core is a folder in that platform's core folder.
