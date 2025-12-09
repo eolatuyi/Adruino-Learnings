@@ -6,15 +6,11 @@ BUILD_OUTPUT_NAME  := pwm_driver_testbed
 TESTBED_DIR ?= ../installer
 
 BUILD_MODULE_NAMES :=                                    \
-$(TESTBED_DIR)/usart.c                                   \
-$(TESTBED_DIR)/main_testbed.c                            \
 pwm_driver_testbed.c                                     \
 pwm_driver.c                           
 
 BUILD_HEADERS_NAME :=                                    \
 $(TESTBED_DIR)/blink_led.h                               \
-$(TESTBED_DIR)/usart.h                                   \
-$(TESTBED_DIR)/main_testbed.h                            \
 pwm_driver.h
 
 BUILD_SOURCES := $($(BUILD_MODULE_NAMES) $(BUILD_HEADERS_NAME))
@@ -22,8 +18,6 @@ BUILD_SOURCES := $($(BUILD_MODULE_NAMES) $(BUILD_HEADERS_NAME))
 PRG = $(BUILD_OUTPUT_NAME)
 OBJ =                                                    \
 $(PRG).o                                                 \
-usart.o                                                  \
-main_testbed.o                                           \
 pwm_driver.o
 
 MCU_TARGET = atmega328p

@@ -6,16 +6,23 @@
  */
 #include <avr/io.h>
 #include <stdint.h>
+#include <util/delay.h>
 #include "pwm_driver.h"
-#include "main_testbed.h"
-
-#define LED_ON_PERIOD (500)
 
 uint8_t pwm_driver_rgb_module_set(uint8_t arg_count, uint8_t* arg_list);
 void    pwm_driver_rgb_module_init(void);
 
-main_testbed_process_t main_testbed_process = (main_testbed_process_t)pwm_driver_rgb_module_set;
-main_testbed_init_t    main_testbed_init = (main_testbed_init_t)pwm_driver_rgb_module_init;
+int main()
+{
+    pwm_driver_rgb_module_init();
+    while(1)
+    {
+        uint8_t levels[3] = {2, 0, 255}; // R, G, B
+        pwm_driver_rgb_module_set(3, levels);
+    }
+
+    return 0;
+}
 
 // FIXME: Application specific testbed needs header: expected number of arg = 3 where
 // arg[0] = 8 bit level for red led component

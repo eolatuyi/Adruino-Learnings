@@ -11,9 +11,9 @@
 void pwm_driver_init(void) {
 
     /* TC0 -8-bit Timer/ Counter0 with PWM register init */
-// enable TC0
-// Channel A (PB3)
-// Need to set DDR output dir pin accordingly for I/O register
+    // enable TC0
+    // Channel A (PB3)
+    // Need to set DDR output dir pin accordingly for I/O register
     DDRB |= _BV(DDB3);    // Output port direction
     DDRD |= _BV(DDD6);    // Output port direction
 
