@@ -2,6 +2,8 @@
 
 A minimal baremetal example toggling an LED (PB5) on and off using the ATmega328P GPIO interface.
 
+**Tested on Hardware:** This example has been tested on real ATmega328P-based Arduino hardware (e.g. Arduino Uno). The onboard LED on digital pin 13 (PB5) toggles as expected.
+
 ## Pin Configuration
 
 ### Register Overview
@@ -61,6 +63,43 @@ avrdude -F -V -c arduino -p ATMEGA328P -P COM3 -b115200 -U flash:w:blink_led.hex
 ```
 
 Adjust `COM3` and `115200` as needed for your board and environment.
+
+### Upload Script (Windows)
+
+An upload helper batch file `blink_led_upload.bat` is provided/generated to simplify flashing on Windows. It calls `avrdude` with the typical Arduino bootloader settings. Edit the `COM` port and baud rate as needed.
+
+Example `blink_led_upload.bat` contents:
+
+```bat
+@echo off
+rem Update COM port as necessary (COM3 used as example)
+set COMPORT=COM3
+set BAUD=115200
+
+rem Write Intel HEX to flash
+avrdude -F -V -c arduino -p ATMEGA328P -P %COMPORT% -b%BAUD% -U flash:w:blink_led.hex:i
+pause
+```
+
+Run the batch file from the `Arduino/blink_led` directory after building:
+
+```powershell
+.\blink_led_upload.bat
+```
+
+### S19 (Motorola S-record) Output
+
+An S19 file is also generated to demonstrate the compact size of the final firmware. To produce an S-record from the ELF:
+
+```bash
+avr-objcopy -O srec -R .eeprom blink_led.elf blink_led.s19
+```
+
+You can inspect the S19 or HEX file sizes to get a quick impression of how small the firmware is:
+
+```powershell
+Get-ChildItem blink_led.hex, blink_led.s19 | Select-Object Name, Length
+```
 
 ## References
 
