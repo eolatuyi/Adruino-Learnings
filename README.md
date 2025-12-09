@@ -32,14 +32,61 @@ Each folder includes:
 
 ## Prerequisites
 
-Currently targets **Windows development environment**. You'll need:
+### Windows Setup for Arduino (ATmega328P) Cross Compilation
 
-- **AVR toolchain**: avr-gcc, avr-libc, avrdude
-  - **Option A (Recommended):** Use [MSYS2](https://www.msys2.org/) with `pacman -S mingw-w64-x86_64-toolchain mingw-w64-x86_64-avr-gcc mingw-w64-x86_64-avr-libc mingw-w64-x86_64-avrdude`
-  - **Option B:** Use [WinAVR](http://winavr.sourceforge.net/) (older but self-contained)
-  - **Option C:** Use WSL2 with Linux toolchain
-- **GNU Make** (usually bundled with above)
-- **Serial port access** to your Arduino (via Device Manager or similar)
+This project requires three main components for Windows development:
+
+#### 1. AVR Toolchain
+
+Install the AVR 8-bit toolchain from Microchip for compiling code targeting ATmega328P and other AVR chips.
+
+- **Download**: [Microchip AVR 8-bit GCC Compiler](https://www.microchip.com/en-us/tools-resources/develop/microchip-studio/gcc-compilers)
+- **Install**: Follow the Microchip installer; default installation path is `C:\AVR\avr8-gnu-toolchain`
+- **Required Tools**: Includes avr-gcc, avr-libc, and binutils for AVR
+
+#### 2. AVRDUDE (Programmer)
+
+AVRDUDE is required to upload compiled firmware to your Arduino board.
+
+- **Download**: [avrdude releases](https://github.com/mariusgreuel/avrdude/releases) (e.g., `avrdude-v7.1-windows-x64.zip`)
+- **Extract**: Extract to a location like `C:\AVR\avrdude`
+- **Purpose**: Programs the ATmega328P via USART bootloader or ICSP
+
+#### 3. GNU Make
+
+The AVR toolchain requires `make` to build projects. **MinGW is recommended** to avoid compatibility issues common with other Windows `make` implementations (Chocolatey, GnuWin32, etc.).
+
+**MinGW Installation (Windows 10/11)**:
+1. Download the [MinGW installer](https://sourceforge.net/projects/mingw/files/) (`mingw-get-setup.exe`)
+2. Run the installer
+3. In the **Basic Setup** tab, select for installation:
+   - `mingw32-base`
+   - `mingw32-gcc-g++`
+   - `msys-base`
+4. Click **Apply Changes** to install
+5. Default installation path: `C:\MinGW`
+
+#### Update System PATH
+
+For me, I added the following directories to Windows PATH environment variable (in order):
+- `C:\AVR\avrdude`
+- `C:\AVR\avr8-gnu-toolchain\bin`
+- `C:\MinGW\bin`
+- `C:\MinGW\msys\1.0\bin`
+
+**To update PATH on Windows**:
+1. Open **Environment Variables** (press `Win+X`, select "System", then "Advanced system settings")
+2. Click **Environment Variables**
+3. Under **System variables**, select **Path** and click **Edit**
+4. Click **New** and add each path above
+5. Click **OK** and restart your terminal/IDE
+
+**Verification**: Open a new Command Prompt or PowerShell and verify:
+```bash
+avr-gcc --version      # Should show AVR GCC version
+avrdude -v             # Should show AVRDUDE version
+make --version         # Should show GNU Make version
+```
 
 ## Quick Start
 
